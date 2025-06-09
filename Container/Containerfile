@@ -1,0 +1,32 @@
+FROM apache/spark:3.5.6-scala2.12-java11-python3-r-ubuntu
+
+USER root
+
+# Configurar opciones JVM para Java 17
+ENV SPARK_DRIVER_JAVA_OPTIONS="--add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED"
+
+# Instalar Jupyter y dependencias incluyendo nodejs
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    curl \
+    wget \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar Jupyter y GitHub Copilot
+RUN pip3 install jupyter jupyterlab notebook
+
+# Instalar Scala kernel (Almond) - versión básica
+RUN curl -Lo coursier https://git.io/coursier-cli && \
+    chmod +x coursier && \
+    ./coursier launch almond --scala 2.12 -- --install && \
+    rm -f coursier
+
+# Configurar directorio de trabajo
+WORKDIR /workspace
+
+# Exponer puerto de Jupyter
+EXPOSE 8888
+
+# Comando por defecto
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--ServerApp.allow_origin='*'"]
