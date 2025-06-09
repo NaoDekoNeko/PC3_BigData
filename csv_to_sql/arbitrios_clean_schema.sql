@@ -1,0 +1,20 @@
+-- Tabla generada desde DataFrame
+DROP TABLE IF EXISTS arbitrios_jm;
+CREATE TABLE arbitrios_jm (
+    fecha_corte INTEGER,
+    periodo INTEGER,
+    cod_contribuyente VARCHAR(500),
+    nom_contribuyente VARCHAR(500),
+    cod_predio VARCHAR(500),
+    porcentaje_condominio DECIMAL(8,2),
+    monto_parque_jardin DECIMAL(15,2),
+    monto_serenazgo DECIMAL(15,2),
+    monto_residuos_solidos DECIMAL(15,2),
+    monto_barrido_calles DECIMAL(15,2),
+    descuento_tope__parque_jardin DECIMAL(15,2),
+    descuento_tope_serenazgo DECIMAL(15,2),
+    descuento_tope_recoleccion_residuo_solido DECIMAL(15,2),
+    descuento_tope_barrido_calle DECIMAL(15,2),
+    departamento VARCHAR(500),
+    provincia VARCHAR(500),
+    distrito VARCHAR(500),
